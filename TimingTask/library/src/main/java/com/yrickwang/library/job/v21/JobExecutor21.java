@@ -9,8 +9,9 @@ import android.os.PersistableBundle;
 import android.support.annotation.RequiresApi;
 
 import com.yrickwang.library.Job;
-import com.yrickwang.library.utils.PersistableBundleCompat;
 import com.yrickwang.library.job.v14.JobExecutor14;
+import com.yrickwang.library.utils.PersistableBundleCompat;
+
 import static android.app.job.JobInfo.NETWORK_TYPE_NONE;
 
 
