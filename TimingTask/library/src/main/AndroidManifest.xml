@@ -7,10 +7,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <service
-            android:name=".TimingJobService"
+            android:name=".job.v21.TimingJobService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".AlarmJobService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

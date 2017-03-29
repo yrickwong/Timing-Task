@@ -12,6 +12,6 @@ public class App extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        TimingTaskManager.init(this);
+        TimingTaskManager.get().init(this);
     }
 }

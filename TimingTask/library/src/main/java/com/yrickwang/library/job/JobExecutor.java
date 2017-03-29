@@ -1,4 +1,4 @@
-package com.yrickwang.library.task;
+package com.yrickwang.library.job;
 
 import com.yrickwang.library.Job;
 
