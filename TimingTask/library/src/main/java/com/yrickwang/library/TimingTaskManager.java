@@ -6,6 +6,8 @@ import android.os.Build;
 import com.yrickwang.library.job.JobExecutor;
 import com.yrickwang.library.job.v14.JobExecutor14;
 import com.yrickwang.library.job.v21.JobExecutor21;
+import com.yrickwang.library.task.TaskFactory;
+import com.yrickwang.library.task.TaskFactoryHolder;
 
 /**
  * Created by wangyi on 2017/3/28.
@@ -26,6 +28,8 @@ public class TimingTaskManager {
 
     private JobExecutor mExecutor;
 
+    private TaskFactoryHolder mTaskFactoryHolder;
+
     public void init(Context context) {
         if (Build.VERSION.SDK_INT >= 21) {
             mExecutor = new JobExecutor21(context);
@@ -34,6 +38,7 @@ public class TimingTaskManager {
         }
 
         mJobDataManager = new JobDataManager(context);
+        mTaskFactoryHolder = new TaskFactoryHolder();
     }
 
 
@@ -43,6 +48,10 @@ public class TimingTaskManager {
 
     public JobDataManager getJobDataManager() {
         return mJobDataManager;
+    }
+
+    public TaskFactoryHolder getTaskFactoryHolder() {
+        return mTaskFactoryHolder;
     }
 
     public JobExecutor getExecutor() {
@@ -57,4 +66,7 @@ public class TimingTaskManager {
         mExecutor.execute(job);
     }
 
+    public void putTaskFactory(String tag, TaskFactory taskFactory) {
+        mTaskFactoryHolder.putFactory(tag, taskFactory);
+    }
 }

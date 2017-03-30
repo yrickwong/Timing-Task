@@ -4,9 +4,11 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import com.yrickwang.library.Job;
 import com.yrickwang.library.TimingTaskManager;
+import com.yrickwang.library.task.Task;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,13 +32,16 @@ public class TimingJobService extends JobService {
     @Override
     public boolean onStartJob(final JobParameters params) {
         final int jobId = params.getJobId();
+        Log.d("wangyi","jobid="+jobId);
         final Job job = TimingTaskManager.get().getJobDataManager().getJob(jobId);
+        final Task task = TimingTaskManager.get().getTaskFactoryHolder().createTask(job.getTag());
+        task.setJob(job);
         //耗时任务全部丢到这里
         EXECUTOR_SERVICE.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-
+                    task.doActionInBackground(task.getParams());
                 } finally {
                     // do not reschedule
                     jobFinished(params, false);

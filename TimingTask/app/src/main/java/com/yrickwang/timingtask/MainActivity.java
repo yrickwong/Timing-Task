@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         //创建了一个background的task后台定时任务请求
         Job.Builder builder = new Job.Builder(BackgroundTask.TAG);
-        builder.setPeriodic(1000 * 10);//设置间隔
+        builder.setPeriodic(1000 * 5);//设置间隔
         PersistableBundleCompat persistableBundleCompat = new PersistableBundleCompat();
         persistableBundleCompat.putString("key", "hello world");
         builder.setExtras(persistableBundleCompat);

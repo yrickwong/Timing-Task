@@ -31,12 +31,6 @@ public class JobExecutor21 extends JobExecutor14 {
         ComponentName service = new ComponentName(mApplicationContext, TimingJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(job.getJobId(), service);
         builder.setPeriodic(job.getIntervalMillis());
-//        PersistableBundleCompat bundleCompat = job.getBundle();
-//        if (bundleCompat != null) {
-//            PersistableBundle bundle = new PersistableBundle();
-//            builder.setExtras(bundle);
-//        }
-
         builder.setRequiredNetworkType(NETWORK_TYPE_NONE);
         scheduler.schedule(builder.build());
     }

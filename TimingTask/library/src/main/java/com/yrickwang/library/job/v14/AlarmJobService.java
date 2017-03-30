@@ -6,6 +6,7 @@ import android.os.IBinder;
 
 import com.yrickwang.library.Job;
 import com.yrickwang.library.TimingTaskManager;
+import com.yrickwang.library.task.Task;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -52,11 +53,13 @@ public class AlarmJobService extends Service {
             }
             int jobId = intent.getIntExtra(EXTRA_JOB_ID, -1);
             final Job job = TimingTaskManager.get().getJobDataManager().getJob(jobId);
+            final Task task = TimingTaskManager.get().getTaskFactoryHolder().createTask(job.getTag());
+            task.setJob(job);
             mExecutorService.execute(new Runnable() {
                 @Override
                 public void run() {
                     try {
-
+                        task.doActionInBackground(task.getParams());
                     } finally {
                         stopSelfIfNecessary(startId);
                     }

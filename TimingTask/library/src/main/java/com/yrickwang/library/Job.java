@@ -1,5 +1,8 @@
 package com.yrickwang.library;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
 import com.yrickwang.library.utils.PersistableBundleCompat;
 
 /**
@@ -32,6 +35,18 @@ public class Job {
 
     public int getJobId() {
         return id;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public static Job fromCursor(Cursor cursor) {
+        return null;
+    }
+
+    public ContentValues toContentValues() {
+        return null;
     }
 
     public static final class Builder {
