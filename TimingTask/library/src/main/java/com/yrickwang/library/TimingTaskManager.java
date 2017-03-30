@@ -32,6 +32,7 @@ public class TimingTaskManager {
         } else if (Build.VERSION.SDK_INT >= 14) {
             mExecutor = new JobExecutor14(context);
         }
+
         mJobDataManager = new JobDataManager(context);
     }
 
@@ -42,6 +43,10 @@ public class TimingTaskManager {
 
     public JobDataManager getJobDataManager() {
         return mJobDataManager;
+    }
+
+    public JobExecutor getExecutor() {
+        return mExecutor;
     }
 
     public void schedule(Job job) {

@@ -7,7 +7,6 @@ import android.support.annotation.RequiresApi;
 
 import com.yrickwang.library.Job;
 import com.yrickwang.library.TimingTaskManager;
-import com.yrickwang.library.task.Task;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,19 +31,14 @@ public class TimingJobService extends JobService {
     public boolean onStartJob(final JobParameters params) {
         final int jobId = params.getJobId();
         final Job job = TimingTaskManager.get().getJobDataManager().getJob(jobId);
-
         //耗时任务全部丢到这里
         EXECUTOR_SERVICE.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    final Task task = job.getTask();
-                    if (task != null) {
-                        task.doAction();
-                    }
+
                 } finally {
                     // do not reschedule
-
                     jobFinished(params, false);
                 }
             }

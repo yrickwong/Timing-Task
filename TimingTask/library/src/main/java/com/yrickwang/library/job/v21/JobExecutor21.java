@@ -5,12 +5,10 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Build;
-import android.os.PersistableBundle;
 import android.support.annotation.RequiresApi;
 
 import com.yrickwang.library.Job;
 import com.yrickwang.library.job.v14.JobExecutor14;
-import com.yrickwang.library.utils.PersistableBundleCompat;
 
 import static android.app.job.JobInfo.NETWORK_TYPE_NONE;
 
@@ -33,13 +31,12 @@ public class JobExecutor21 extends JobExecutor14 {
         ComponentName service = new ComponentName(mApplicationContext, TimingJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(job.getJobId(), service);
         builder.setPeriodic(job.getIntervalMillis());
-        PersistableBundleCompat bundleCompat = job.getBundle();
-        if (bundleCompat != null) {
-            PersistableBundle bundle = new PersistableBundle();
-            builder.setExtras(bundle);
-        } else {
+//        PersistableBundleCompat bundleCompat = job.getBundle();
+//        if (bundleCompat != null) {
+//            PersistableBundle bundle = new PersistableBundle();
+//            builder.setExtras(bundle);
+//        }
 
-        }
         builder.setRequiredNetworkType(NETWORK_TYPE_NONE);
         scheduler.schedule(builder.build());
     }

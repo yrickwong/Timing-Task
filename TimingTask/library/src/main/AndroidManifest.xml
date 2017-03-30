@@ -8,11 +8,10 @@
         android:supportsRtl="true">
         <service
             android:name=".job.v21.TimingJobService"
-            android:enabled="true"
-            android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name=".AlarmJobService"
+            android:name=".job.v14.AlarmJobService"
+            android:enabled="false"
             android:exported="false"></service>
     </application>
 

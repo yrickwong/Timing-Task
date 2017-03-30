@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.yrickwang.library.Job;
 import com.yrickwang.library.TimingTaskManager;
-import com.yrickwang.library.task.DownloadTask;
 import com.yrickwang.library.utils.PersistableBundleCompat;
+import com.yrickwang.timingtask.job.BackgroundTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,12 +18,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Job.Builder builder = new Job.Builder();
+        //创建了一个background的task后台定时任务请求
+        Job.Builder builder = new Job.Builder(BackgroundTask.TAG);
         builder.setPeriodic(1000 * 10);//设置间隔
         PersistableBundleCompat persistableBundleCompat = new PersistableBundleCompat();
+        persistableBundleCompat.putString("key", "hello world");
         builder.setExtras(persistableBundleCompat);
         Job job = builder.build();
-        job.setTask(new DownloadTask());
         TimingTaskManager.get().schedule(job);
+
     }
 }
