@@ -9,10 +9,7 @@
         <service
             android:name=".job.v21.TimingJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name=".job.v14.AlarmJobService"
-            android:enabled="false"
-            android:exported="false"></service>
+        <service android:name=".job.v14.ConcurrentIntentService" />
     </application>
 
 </manifest>

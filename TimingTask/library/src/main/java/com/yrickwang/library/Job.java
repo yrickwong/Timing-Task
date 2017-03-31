@@ -47,6 +47,16 @@ public class Job {
         return job;
     }
 
+    @Override
+    public String toString() {
+        return "Job{" +
+                "tag='" + tag + '\'' +
+                ", id=" + id +
+                ", intervalMillis=" + intervalMillis +
+                ", mExtras=" + mExtras +
+                '}';
+    }
+
     public ContentValues toContentValues() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(JobDataManager.COLUMN_ID, id);

@@ -1,6 +1,5 @@
 package com.yrickwang.library.task;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
 import com.yrickwang.library.Job;
@@ -13,7 +12,6 @@ import com.yrickwang.library.utils.PersistableBundleCompat;
 
 public interface Task {
 
-    @NonNull
     @WorkerThread
     void doActionInBackground(Params params);
 

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.util.LruCache;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,9 +17,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class JobDataManager {
     private static final String PREF_FILE_NAME = "timingtask_jobs";
-    public static final String DATABASE_NAME = PREF_FILE_NAME + ".db";
-    public static final String JOB_TABLE_NAME = "jobs";
-    public static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = PREF_FILE_NAME + ".db";
+    private static final String JOB_TABLE_NAME = "jobs";
+    private static final int DATABASE_VERSION = 1;
     private static final String JOB_ID_COUNTER = "JOB_ID_COUNTER";
 
     private static final int CACHE_SIZE = 30;
@@ -28,10 +29,10 @@ public class JobDataManager {
     private final JobOpenHelper mDbHelper;
     private SQLiteDatabase mDatabase;
 
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_TAG = "tag";
-    public static final String COLUMN_INTERVAL_MS = "intervalMs";
-    public static final String COLUMN_EXTRAS = "extras";
+    static final String COLUMN_ID = "_id";
+    static final String COLUMN_TAG = "tag";
+    static final String COLUMN_INTERVAL_MS = "intervalMs";
+    static final String COLUMN_EXTRAS = "extras";
 
     public JobDataManager(Context context) {
         mPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
@@ -61,6 +62,7 @@ public class JobDataManager {
         try {
             ContentValues contentValues = job.toContentValues();
             getDatabase().insert(JOB_TABLE_NAME, null, contentValues);
+            Log.d("wangyi", "store=" + job);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,6 +94,7 @@ public class JobDataManager {
             String where = COLUMN_ID + "=?";
             cursor = getDatabase().query(JOB_TABLE_NAME, null, where, new String[]{String.valueOf(id)}, null, null, null);
             if (cursor.moveToFirst()) {
+                Log.d("wangyi", "store=" + id);
                 return Job.fromCursor(cursor);
             }
 
