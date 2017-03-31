@@ -25,19 +25,17 @@
  */
 package com.yrickwang.library.utils;
 
-import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Compat class which provides similar features like {@link PersistableBundle}. Besides a boolean array
- * all methods are available.
- *
- * @author rwondratschek
- */
-@SuppressWarnings("unused")
 public final class PersistableBundleCompat {
 
     private static final String UTF_8 = "UTF-8";
@@ -220,4 +218,52 @@ public final class PersistableBundleCompat {
     }
 
 
+    @NonNull
+    public String saveToXml() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            XmlUtils.writeMapXml(mValues, outputStream);
+            return outputStream.toString(UTF_8);
+
+        } catch (XmlPullParserException | IOException e) {
+            // shouldn't happen
+            return "";
+
+        } catch (Error e) {
+            // https://gist.github.com/vRallev/9444359f05259e4b6317 and other crashes on rooted devices
+            return "";
+
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @NonNull
+    public static PersistableBundleCompat fromXml(@NonNull String xml) {
+        ByteArrayInputStream inputStream = null;
+        try {
+            inputStream = new ByteArrayInputStream(xml.getBytes(UTF_8));
+            HashMap<String, ?> map = XmlUtils.readMapXml(inputStream);
+            return new PersistableBundleCompat((Map<String, Object>) map);
+
+        } catch (XmlPullParserException | IOException e) {
+            return new PersistableBundleCompat();
+
+        } catch (VerifyError e) {
+            // https://gist.github.com/vRallev/9444359f05259e4b6317
+            return new PersistableBundleCompat();
+
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+    }
 }

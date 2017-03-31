@@ -29,13 +29,17 @@ public class JobDataManager {
     private SQLiteDatabase mDatabase;
 
     public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_TAG = "tag";
+    public static final String COLUMN_INTERVAL_MS = "intervalMs";
+    public static final String COLUMN_EXTRAS = "extras";
 
     public JobDataManager(Context context) {
         mPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        mCache = new LruCache<>(CACHE_SIZE);
+        mCache = new JobCacheId();
         int lastJobId = mPreferences.getInt(JOB_ID_COUNTER, 0);
         mJobCounter = new AtomicInteger(lastJobId);
-        mDbHelper = new JobOpenHelper(context);  //id还是需要做本地缓存，因为进程重启的话，会导致从0开始计算，然后alarmManager还在运行，会导致任务重复运行
+        //job还是需要做本地缓存，因为进程重启的话，又不会去schedule之前的任务，就会导致job获取为空的情况
+        mDbHelper = new JobOpenHelper(context);
     }
 
     public synchronized int nextJobId() {
@@ -92,7 +96,7 @@ public class JobDataManager {
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -128,7 +132,9 @@ public class JobDataManager {
         private void createJobTable(SQLiteDatabase db) {
             db.execSQL("create table " + JOB_TABLE_NAME + " ("
                     + COLUMN_ID + " integer primary key, "
-            );
+                    + COLUMN_TAG + " text not null, "
+                    + COLUMN_INTERVAL_MS + " integer, "
+                    + COLUMN_EXTRAS + " text);");
         }
 
         @Override

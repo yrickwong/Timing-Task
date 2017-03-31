@@ -2,6 +2,7 @@ package com.yrickwang.library;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import com.yrickwang.library.utils.PersistableBundleCompat;
 
@@ -23,14 +24,14 @@ public class Job {
 
     private long intervalMillis;
 
-    private PersistableBundleCompat mBundle;
+    private PersistableBundleCompat mExtras;
 
     public long getIntervalMillis() {
         return intervalMillis;
     }
 
     public PersistableBundleCompat getExtras() {
-        return mBundle;
+        return mExtras;
     }
 
     public int getJobId() {
@@ -42,15 +43,23 @@ public class Job {
     }
 
     public static Job fromCursor(Cursor cursor) {
-        return null;
+        Job job = new Builder(cursor).build();
+        return job;
     }
 
     public ContentValues toContentValues() {
-        return null;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(JobDataManager.COLUMN_ID, id);
+        contentValues.put(JobDataManager.COLUMN_TAG, tag);
+        contentValues.put(JobDataManager.COLUMN_INTERVAL_MS, intervalMillis);
+        if (mExtras != null) {
+            contentValues.put(JobDataManager.COLUMN_EXTRAS, mExtras.saveToXml());
+        }
+        return contentValues;
     }
 
     public static final class Builder {
-        private final String mTag;
+        private String mTag;
         private long mIntervalMillis;
         private PersistableBundleCompat mBundle;
         private int mId;
@@ -60,6 +69,16 @@ public class Job {
             mTag = tag;
             //任务id自动生成
             mId = TimingTaskManager.get().getJobDataManager().nextJobId();
+        }
+
+        public Builder(Cursor cursor) {
+            mId = cursor.getInt(cursor.getColumnIndex(JobDataManager.COLUMN_ID));
+            mTag = cursor.getString(cursor.getColumnIndex(JobDataManager.COLUMN_TAG));
+            mIntervalMillis = cursor.getLong(cursor.getColumnIndex(JobDataManager.COLUMN_INTERVAL_MS));
+            String extrasXml = cursor.getString(cursor.getColumnIndex(JobDataManager.COLUMN_EXTRAS));
+            if (!TextUtils.isEmpty(extrasXml)) {
+                mBundle = PersistableBundleCompat.fromXml(extrasXml);
+            }
         }
 
         public Builder setPeriodic(long intervalMillis) {
@@ -75,7 +94,7 @@ public class Job {
         public Job build() {
             Job job = new Job();
             job.intervalMillis = mIntervalMillis;
-            job.mBundle = mBundle;
+            job.mExtras = mBundle;
             job.id = mId;
             job.tag = mTag;
             return job;
