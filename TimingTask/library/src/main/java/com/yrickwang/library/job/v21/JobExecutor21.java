@@ -30,7 +30,12 @@ public class JobExecutor21 extends JobExecutor14 {
         JobScheduler scheduler = (JobScheduler) mApplicationContext.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         ComponentName service = new ComponentName(mApplicationContext, TimingJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(job.getJobId(), service);
-        builder.setPeriodic(job.getIntervalMillis());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            //As a workaround, I'm using following code to schedule jobs at periodic intervals if job interval is less than 15minutes.
+            builder.setMinimumLatency(job.getIntervalMillis());
+        }else {
+            builder.setPeriodic(job.getIntervalMillis());
+        }
         builder.setRequiredNetworkType(NETWORK_TYPE_NONE);
         scheduler.schedule(builder.build());
     }

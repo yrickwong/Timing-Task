@@ -25,7 +25,6 @@ public class BackgroundTask extends BaseTask {
             final String value = extras.getString("key", null);
             if (value != null) {
                 Log.d("wangyi", "value=" + value);
-                //
                 new Handler(App.getApp().getMainLooper()) {
                     @Override
                     public void handleMessage(Message msg) {

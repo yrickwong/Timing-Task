@@ -3,6 +3,7 @@ package com.yrickwang.library.job.v14;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.yrickwang.library.Job;
@@ -15,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 因为是并发处理多个request的IntentService
+ * 并发处理多个request的IntentService
  * <p>
  * 如果是以单线程的方式处理多个启动请求，就会采用IntentService了
  * IntentService还有一个好处就是 处理完请求后就会自行销毁，不用手动stop
@@ -55,6 +56,7 @@ public class ConcurrentIntentService extends Service {
             int jobId = intent.getIntExtra(EXTRA_JOB_ID, -1);
             Log.d("wangyi", "jobid=" + jobId);
             final Job job = TimingTaskManager.get().getJobDataManager().getJob(jobId);
+            JobExecutor14.alarmJob(this, SystemClock.elapsedRealtime(), job.getIntervalMillis(), JobExecutor14.getPendingIntent(this, job));
             final Task task = TimingTaskManager.get().getTaskFactoryHolder().createTask(job.getTag());
             task.setJob(job);
             mExecutorService.execute(new Runnable() {
