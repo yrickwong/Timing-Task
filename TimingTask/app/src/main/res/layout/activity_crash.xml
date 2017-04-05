@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yrickwang.timingtask.MainActivity">
+    tools:context="com.yrickwang.timingtask.CrashActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="368dp"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="-1dp" />
+        android:text="TextView"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="40dp"
+        tools:text="this is crash activity" />
 </android.support.constraint.ConstraintLayout>

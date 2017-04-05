@@ -10,6 +10,15 @@
             android:name=".job.v21.TimingJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service android:name=".job.v14.ConcurrentIntentService" />
+
+        <receiver
+            android:name=".job.v14.AlarmBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.yrickwang.library.action.alarmjob"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

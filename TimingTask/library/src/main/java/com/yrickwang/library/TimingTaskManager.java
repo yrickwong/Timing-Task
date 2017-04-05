@@ -5,7 +5,6 @@ import android.os.Build;
 
 import com.yrickwang.library.job.JobExecutor;
 import com.yrickwang.library.job.v14.JobExecutor14;
-import com.yrickwang.library.job.v21.JobExecutor21;
 import com.yrickwang.library.task.TaskFactory;
 import com.yrickwang.library.task.TaskFactoryHolder;
 
@@ -32,7 +31,7 @@ public class TimingTaskManager {
 
     public void init(Context context) {
         if (Build.VERSION.SDK_INT >= 21) {
-            mExecutor = new JobExecutor21(context);
+            mExecutor = new JobExecutor14(context);
         } else if (Build.VERSION.SDK_INT >= 14) {
             mExecutor = new JobExecutor14(context);
         }

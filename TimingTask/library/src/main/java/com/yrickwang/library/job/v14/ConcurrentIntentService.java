@@ -1,10 +1,9 @@
 package com.yrickwang.library.job.v14;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.SystemClock;
-import android.util.Log;
 
 import com.yrickwang.library.Job;
 import com.yrickwang.library.TimingTaskManager;
@@ -22,7 +21,6 @@ import java.util.concurrent.Executors;
  * IntentService还有一个好处就是 处理完请求后就会自行销毁，不用手动stop
  */
 public class ConcurrentIntentService extends Service {
-    public static final String ALARM_ACTION = "com.yrickwang.action.alarm";//强判断
 
     public static final String EXTRA_JOB_ID = "com.yrickwang.extra.ob.id";
 
@@ -54,9 +52,8 @@ public class ConcurrentIntentService extends Service {
                 mLastStartId = startId;
             }
             int jobId = intent.getIntExtra(EXTRA_JOB_ID, -1);
-            Log.d("wangyi", "jobid=" + jobId);
             final Job job = TimingTaskManager.get().getJobDataManager().getJob(jobId);
-            JobExecutor14.alarmJob(this, SystemClock.elapsedRealtime(), job.getIntervalMillis(), JobExecutor14.getPendingIntent(this, job));
+            //task保证每次都是new的
             final Task task = TimingTaskManager.get().getTaskFactoryHolder().createTask(job.getTag());
             task.setJob(job);
             mExecutorService.execute(new Runnable() {
@@ -85,5 +82,11 @@ public class ConcurrentIntentService extends Service {
                 }
             }
         }
+    }
+
+    public static Intent createIntent(Context context, int jobId) {
+        Intent intent = new Intent(context, ConcurrentIntentService.class);
+        intent.putExtra(AlarmBroadcastReceiver.EXTRA_JOB_ID, jobId);
+        return intent;
     }
 }

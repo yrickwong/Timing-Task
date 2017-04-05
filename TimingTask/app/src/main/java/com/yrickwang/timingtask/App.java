@@ -27,5 +27,6 @@ public class App extends Application {
         TimingTaskManager.get().init(this);
         //新增的task类别需要先注册，
         TimingTaskManager.get().putTaskFactory(BackgroundTask.TAG, new BackgroundTaskFactory());
+        CrashHandler.getInstance().init(this);
     }
 }

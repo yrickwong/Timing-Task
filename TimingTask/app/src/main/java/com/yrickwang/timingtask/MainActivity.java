@@ -27,5 +27,6 @@ public class MainActivity extends AppCompatActivity {
         Job job = builder.build();
         TimingTaskManager.get().schedule(job);
 
+
     }
 }

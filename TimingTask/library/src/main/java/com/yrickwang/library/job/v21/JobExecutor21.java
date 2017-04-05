@@ -26,7 +26,6 @@ public class JobExecutor21 extends JobExecutor14 {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void execute(Job job) {
-        //到这里来 每次都要确保new一个新的job!
         JobScheduler scheduler = (JobScheduler) mApplicationContext.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         ComponentName service = new ComponentName(mApplicationContext, TimingJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(job.getJobId(), service);
