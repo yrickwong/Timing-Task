@@ -17,9 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CrashActivity"
-            android:theme="@style/Theme.AppCompat.Dialog"/>
     </application>
 
 </manifest>
