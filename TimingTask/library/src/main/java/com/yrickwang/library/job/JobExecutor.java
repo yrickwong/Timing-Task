@@ -10,5 +10,5 @@ public abstract class JobExecutor {
 
     public abstract void execute(Job job);
 
-
+    public abstract void cancel(int jobId);
 }

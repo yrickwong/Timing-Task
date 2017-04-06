@@ -16,7 +16,7 @@ import com.yrickwang.library.job.JobExecutor;
 
 public class JobExecutor14 extends JobExecutor {
 
-    protected final Context mApplicationContext;
+    private final Context mApplicationContext;
 
     public JobExecutor14(Context applicationContext) {
         this.mApplicationContext = applicationContext;
@@ -29,7 +29,12 @@ public class JobExecutor14 extends JobExecutor {
         Common.alarmJob(mApplicationContext, triggerAtMillis, job.getIntervalMillis(), pendingIntent);
     }
 
-    protected PendingIntent getPendingIntent(Context context, Job job) {
+    @Override
+    public void cancel(int jobId) {
+
+    }
+
+    private PendingIntent getPendingIntent(Context context, Job job) {
         Intent intent = AlarmBroadcastReceiver.createIntent(context, job.getJobId());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         return pendingIntent;

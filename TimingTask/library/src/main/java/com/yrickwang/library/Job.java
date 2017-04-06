@@ -68,6 +68,11 @@ public class Job {
         return contentValues;
     }
 
+    public int schedule() {
+        TimingTaskManager.get().schedule(this);
+        return id;
+    }
+
     public static final class Builder {
         private String mTag;
         private long mIntervalMillis;

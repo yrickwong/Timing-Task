@@ -1,9 +1,8 @@
 package com.yrickwang.timingtask;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.yrickwang.library.Job;
 import com.yrickwang.library.TimingTaskManager;
@@ -12,11 +11,14 @@ import com.yrickwang.timingtask.job.BackgroundTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+    private int mLastId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //创建了一个background的task后台定时任务请求
         Job.Builder builder = new Job.Builder(BackgroundTask.TAG);
@@ -25,8 +27,11 @@ public class MainActivity extends AppCompatActivity {
         persistableBundleCompat.putString("key", "hello world");
         builder.setExtras(persistableBundleCompat);
         Job job = builder.build();
-        TimingTaskManager.get().schedule(job);
+        mLastId = job.schedule();
 
+    }
 
+    public void stopTask(View view) {
+        TimingTaskManager.get().cancel(mLastId);
     }
 }

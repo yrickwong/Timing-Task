@@ -6,9 +6,11 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.LruCache;
 
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -58,6 +60,14 @@ public class JobDataManager {
         store(job);
     }
 
+    /**
+     * @param tag 可以为空，为空代表获取所有
+     */
+    public synchronized void getAllJob(@Nullable String tag) {
+        //直接从数据库中获取，如果从cache中获取有可能会出现为空的情况
+
+    }
+
     private void store(Job job) {
         try {
             ContentValues contentValues = job.toContentValues();
@@ -74,6 +84,16 @@ public class JobDataManager {
 
     public synchronized Job getJob(int jobId) {
         return mCache.get(jobId);
+    }
+
+
+    /**
+     *
+     * @param tag  为null的话就说明获取所有
+     * @return
+     */
+    public synchronized Set<Job> getAllJobByTag(@Nullable String tag) {
+        return null;
     }
 
     private class JobCacheId extends LruCache<Integer, Job> {

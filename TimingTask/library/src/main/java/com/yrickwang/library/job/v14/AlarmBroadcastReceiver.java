@@ -14,6 +14,7 @@ import com.yrickwang.library.job.Common;
 
 /**
  * Created by wangyi on 2017/3/31.
+ * 用于实现Api setRepeating()失效的情形,通过接收广播再次重新轮训
  */
 
 public class AlarmBroadcastReceiver extends BroadcastReceiver {
@@ -36,8 +37,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                 Log.d("wangyi", "jobid=" + jobId);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, AlarmBroadcastReceiver.createIntent(context, job.getJobId()), PendingIntent.FLAG_CANCEL_CURRENT);
                 Common.alarmJob(context, SystemClock.elapsedRealtime(), job.getIntervalMillis(), pendingIntent);
-                Intent startService = ConcurrentIntentService.createIntent(context, intent.getIntExtra(EXTRA_JOB_ID, -1));
                 //do your thing!
+                Intent startService = ConcurrentIntentService.createIntent(context, intent.getIntExtra(EXTRA_JOB_ID, -1));
                 context.startService(startService);
             }
         }
